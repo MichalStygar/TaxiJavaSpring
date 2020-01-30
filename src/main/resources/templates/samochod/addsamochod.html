@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dodawanie samochodu do bazy</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+</head>
+    
+    <body >
+
+        <header>
+            <nav class="navbar static-top navbar-expand-lg navbar-light bg-info ">
+              <a class="navbar-brand" href="/"><img src="https://img.icons8.com/dusk/2x/taxi.png"  width="35" height="35" 
+                class="d-inline-block mr-1 align-bottom" alt=""> Taxi.pl</a>
+                <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                    <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+                        <div class="navbar-nav ">
+                        <a class="nav-item nav-link " href="/home/taxi">Strona główna <span class="sr-only">(current)</span></a>
+                        <a class="nav-item nav-link " href="/adres/printalladres">Adres</a>
+                        <a class="nav-item nav-link " href="/klient/printallklient">Klient</a>                       
+                        <a class="nav-item nav-link " href="/kurs/printallkurs">Kurs</a>
+                        <a class="nav-item nav-link " href="/paragon/printallparagon">Paragon</a>
+                        <a class="nav-item nav-link active" href="/samochod/printallsamochod">Samochód</a>
+                        <a class="nav-item nav-link" href="/taksowkarz/printalltaksowkarz">Taksówkarz</a>
+                        <a class="nav-item nav-link" href="/taryfa/printalltaryfa">Taryfa</a>
+                       
+                        <form method="POST" th:action="@{/logout}">
+                        <input class="btn btn-primary text-white col-lg-12" type="submit" role="submit" value="Wyloguj" />
+                        </form>
+                        
+                        </div>
+                    </div>
+            </nav>
+        </header>
+    </body>
+    
+    
+    
+<main>
+  
+    <div class="container">
+        
+        <div class="col-md-12">
+            <section class="jumpers" style="text-align: center;">
+                <h2 class="mt-5"> Dodawanie samochodu:</h2>
+            </section>
+            
+    <form th:action="@{/samochod/addsamochod}" method="POST" th:object="${samochod}">
+
+        <div class="col-md-4 offset-md-4 mb-2">
+            <div class="form-group" style="margin-bottom: 0">    
+                <label  class="mt-2"> Podaj markę: </label>
+            
+                <input type="text" class="form-control" id="marka" th:field="${samochod.marka}" value=""/> 
+                <div class="text text-danger" th:if="${#fields.hasErrors('marka')}" th:errors='${samochod.marka}'></div>
+            </div>   
+        </div>   
+
+       
+        <div class="col-md-4 offset-md-4 mb-2">
+            <div class="form-group" style="margin-bottom: 0">    
+                <label> Podaj model: </label>
+                <br/>
+                <input type="text" class="form-control" id="modell" th:field="${samochod.modell}" value=""/> 
+                <div class="text text-danger" th:if="${#fields.hasErrors('modell')}" th:errors='${samochod.modell}'></div>
+            </div>       
+        </div>
+        <br/>
+        
+        <div class="col-md-4 offset-md-4 mb-2">
+            <div class="form-group" style="margin-bottom: 0">    
+                <label> Podaj rok produkcji: </label>
+                <br/>
+                <input type="text" class="form-control" id="rok_produkcji" th:field="${samochod.rok_produkcji}" value=""/> 
+                <div class="text text-danger" th:if="${#fields.hasErrors('rok_produkcji')}" th:errors='${samochod.rok_produkcji}'></div>
+            </div>       
+        </div>    
+        <br/>
+        
+        <div class="col-md-4 offset-md-4 mb-2">
+            <div class="form-group" style="margin-bottom: 0">    
+                <label> Podaj nr rejestracyjny: </label>
+                <br/>
+                <input type="text" class="form-control" id="nr_rejestracyjny" th:field="${samochod.nr_rejestracyjny}" value=""/> 
+                <div class="text text-danger" th:if="${#fields.hasErrors('nr_rejestracyjny')}" th:errors='${samochod.nr_rejestracyjny}'></div>
+            </div>       
+        </div>    
+        <br/>
+        
+        <div class="col-md-4 offset-md-4 mb-2">
+            <div class="form-group" style="margin-bottom: 0">    
+                <label> Podaj nr boczny: </label>
+                <br/>
+                <input type="text" class="form-control" id="nrBoczny" th:field="${samochod.nrBoczny}" value=""/> 
+                <div class="text text-danger" th:if="${#fields.hasErrors('nrBoczny')}" th:errors='${samochod.nrBoczny}'></div>
+            </div>       
+        </div>    
+        <br/>
+        
+              
+
+        <br/>
+
+            
+        <section class="jumpers" style="text-align: center;">
+            <input type="submit" class="btn btn-primary" value="Dodaj" />
+        </section>
+        <br/>
+      
+
+
+    </form>
+    
+    </div>
+   </div>
+
+</main>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</html>
+

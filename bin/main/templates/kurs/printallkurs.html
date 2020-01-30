@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">    
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />        
+        <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>        
+        <title>Lista Klientow</title>               
+    </head>
+    
+    <body >
+
+        <header>
+            <nav class="navbar static-top navbar-expand-lg navbar-light bg-info ">
+              <a class="navbar-brand" href="/"><img src="https://img.icons8.com/dusk/2x/taxi.png"  width="35" height="35" 
+                class="d-inline-block mr-1 align-bottom" alt=""> Taxi.pl</a>
+                <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                    <div class="collapse navbar-collapse " id="navbarNavAltMarkup">
+                        <div class="navbar-nav ">
+                        <a class="nav-item nav-link " href="/home/taxi">Strona główna <span class="sr-only">(current)</span></a>
+                        <a class="nav-item nav-link" sec:authorize="hasAuthority('admin')" href="/adres/printalladres">Adres</a>
+                        <a class="nav-item nav-link " sec:authorize="hasAuthority('admin')" href="/klient/printallklient">Klient</a>                       
+                        <a class="nav-item nav-link active"  href="/kurs/printallkurs">Kurs</a>
+                        <a class="nav-item nav-link" href="/paragon/printallparagon">Paragon</a>
+                        <a class="nav-item nav-link" sec:authorize="hasAuthority('admin')" href="/samochod/printallsamochod">Samochód</a>
+                        <a class="nav-item nav-link" sec:authorize="hasAuthority('admin')" href="/taksowkarz/printalltaksowkarz">Taksówkarz</a>
+                        <a class="nav-item nav-link" sec:authorize="hasAuthority('admin')" href="/taryfa/printalltaryfa">Taryfa</a>  
+                        <form method="POST" th:action="@{/logout}">
+                        <input class="btn btn-primary text-white col-lg-12"  type="submit" role="submit" value="Wyloguj" />
+                        </form>
+                        
+                        </div>
+                    </div>
+            </nav>
+        </header>
+    </body>
+    
+    
+    <main>
+        
+        
+        <div class="container mt-5 mb-2">                
+            <h4>   <strong th:text="${header}"/>  </h4>
+            <a id="nonPrint" class="btn btn-primary text-white" sec:authorize="hasAuthority('admin') or hasAuthority('admin')"  href="/kurs/addkurs" role="button">Dodaj kurs</a>
+           
+                        
+        </div>
+              
+        
+       
+       
+           
+
+        <div class="container">
+            <div class="table-responsive">
+                <div id="HTMLtoPDF">
+                <table class="table table-bordered">          
+                    <thead>
+                        <tr  class="table-primary">
+                            <th sec:authorize="hasAuthority('admin') or hasAuthority('taksowkarz')">Id</th>
+                            <th sec:authorize="hasAuthority('user')">Numer</th>
+                            <th>Adres początkowy</th>  
+                            <th>Adres końcowy</th>  
+                            <th>Data i godz początkowa</th>
+                            <th id="nonPrint" sec:authorize="hasAuthority('admin')">id_klienta</th>
+                            <th id="nonPrint" sec:authorize="hasAuthority('admin')">id_taksowkarza</th>
+                            <th id="nonPrint" sec:authorize="hasAuthority('admin')">id_taryfy</th>
+                            <th id="nonPrint" sec:authorize="hasAuthority('admin')">Opcje</th>
+                           
+                            
+                        </tr>
+                        
+                    </thead>
+                    <tbody>                       
+                        <tr th:each ="kurs : ${kursList}">               
+                            <td> <b  th:utext="${kurs.id}">...</b> </td>
+                            <td> <b  th:utext="${kurs.adresPocztowy}">...</b> </td>
+                            <td> <b  th:utext="${kurs.adresKoncowy}">...</b> </td>
+                            <td> <b  th:utext="${kurs.dataGodzinaPoczatkowa}">...</b> </td>
+                            <td id="nonPrint" sec:authorize="hasAuthority('admin')"> <b  th:text="${kurs.klient.id}">...</b> </td>
+                            <td id="nonPrint" sec:authorize="hasAuthority('admin')"> <b  th:text="${kurs.taksowkarz.id}">...</b> </td>
+                            <td id="nonPrint" sec:authorize="hasAuthority('admin')"> <b  th:text="${kurs.taryfa.id}">...</b> </td>
+                            <td id="nonPrint" sec:authorize="hasAuthority('admin')"><a  class="btn btn-primary" th:href="@{/kurs/printallkurs/delete/} + ${kurs.id}" role="button">Usuń</a>
+                            <a  class="btn btn-primary" th:href="@{/kurs/printallkurs/edycja/} + ${kurs.id}" role="button">Edytuj</a></td>
+                            
+                            
+                                
+                            
+                        </tr>
+                    </tbody>          
+                </table>
+                    </div>
+            </div>
+            <br><br>
+            <button id="nonPrint" onclick="windowPrint()" class="btn btn-primary text-white">Utwórz PDF</button>
+            
+        </div>
+
+
+    </main>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script> 
+        <script>
+            function windowPrint(){
+                window.print();
+            }
+        </script>
+        <style>
+            @media print{
+            #nonPrint{
+                display:none;
+            }
+            }
+        </style>
+</html>
+
